@@ -1,0 +1,22 @@
+{
+    "name": "efthakhar/efthakhar-cf7-database",
+    "description": "Database for Contact From 7 Submissions",
+    "type": "wordpress-plugin",
+    "license": "GPLv2",
+    "authors": [{
+        "name": "Efthakhar Bin Alam",
+        "email": "efthakharbin@gmail.com"
+    }],
+    "minimum-stability": "dev",
+    
+    "autoload": {
+        "psr-4": {
+            "EfthakharCF7DB\\": "includes/"          
+        },
+        "files": [
+            "includes/Helpers/helpers.php"
+        ]
+    }
+   
+
+}
