@@ -2,6 +2,7 @@
 
 namespace EfthakharCF7DB;
 
+use EfthakharCF7DB\Actions\CF7Actions;
 use EfthakharCF7DB\Traits\Singleton;
 
 class Pages {
@@ -40,7 +41,7 @@ class Pages {
             NULL
         );
 
-		remove_submenu_page('efthakharcf7db', 'efthakharcf7db');
+		remove_submenu_page('efthakharcf7db', 'efthakharcf7db');	
 	}
 
 	public function efthakharcf7db_admin_page_contents() {

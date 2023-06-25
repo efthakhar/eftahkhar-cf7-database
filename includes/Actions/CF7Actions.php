@@ -12,6 +12,14 @@ class CF7Actions {
 		add_action('wpcf7_after_save', [$this, 'handle_cf7_save']);
 	}
 
+	public function sync_exsisting_cf7forms() {
+		$contact_forms = \WPCF7_ContactForm::find();
+
+		foreach ($contact_forms as $cf7_form) {
+			$cf7_form->save();
+		}
+	}
+
 	public function handle_cf7_save($cf7) {
 		global $wpdb;
 		date_default_timezone_set('UTC');
