@@ -70,7 +70,7 @@ final class EfthakharCF7DB {
 		// Add Cf7 hook handler Classes
 		EfthakharCF7DB\Actions\CF7Actions::instance();
 
-		// new FormCat\Api\Forms();
+		new EfthakharCF7DB\Api\Forms();
 		// new FormCat\Api\Submissions();
 	}
 
