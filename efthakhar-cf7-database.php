@@ -52,6 +52,7 @@ final class EfthakharCF7DB {
 		new EfthakharCF7DB\Database\CreateTables();
 
 		do_action( 'efthakharcf7db_activated');
+		wp_schedule_single_event( time() + 5, 'efthakharcf7db_sync_exsisting_cf7forms_event' );
 	}
 
 	public function init_plugin() {

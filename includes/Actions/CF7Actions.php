@@ -10,6 +10,7 @@ class CF7Actions {
 	public function __construct() {
 		// Save form info after saving or editing cf7 form
 		add_action('wpcf7_after_save', [$this, 'handle_cf7_save']);
+		add_action( 'efthakharcf7db_sync_exsisting_cf7forms_event', [$this, 'sync_exsisting_cf7forms'] );
 	}
 
 	public function sync_exsisting_cf7forms() {
@@ -74,7 +75,7 @@ class CF7Actions {
 				'cf7_id'     => $cf7->id,
 				'name'       => $cf7->title(),
 				'fields'     => json_encode($fields),
-				'created_by' => get_current_user_id(),
+				'created_by' => get_current_user_id()==0?NULL:get_current_user_id(),
 				'created_at' => $currentFormatedDateTime,
 			]);
 		}
