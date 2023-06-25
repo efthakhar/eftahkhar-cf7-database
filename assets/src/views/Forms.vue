@@ -25,7 +25,7 @@ async function fetchForms(page = current_page.value, perpage = per_page.value) {
       }
     )
     .then((response) => {
-      forms.value = response.data.data;
+      forms.value = response.data.forms;
       current_page.value = response.data.current_page
       total_pages.value = response.data.last_page
     })
@@ -53,7 +53,6 @@ onMounted(() => {
                 <input type="checkbox" />
               </th> -->
               <th scope="col" class="minwidth-200">Form Name</th>
-              <th scope="col" class="minwidth-100">Form Plugin</th>
               <th scope="col" class="minwidth-100">action</th>
             </tr>
           </thead>
@@ -62,8 +61,7 @@ onMounted(() => {
               <!-- <th scope="row">
                 <input type="checkbox" />
               </th> -->
-              <td>{{ form.form_name }}</td>
-              <td>{{ form.plugin_name }}</td>
+              <td>{{ form.name }}</td>
               <td>
                 <button class="btn btn-sm btn-primary"
                   @click="router.push({ name: 'submissions', params: { form_id: form.id } })">submissions</button>
