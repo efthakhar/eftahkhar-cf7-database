@@ -29,11 +29,11 @@ async function fetchSubmissions(form_id, page = current_page.value, perpage = pe
     }
     await axios
         .get(
-            `/wp-json/efcf7db/v1/submissions?form_id=${form_id}&page=${page}&perpage=${perpage}`,
+            `/wp-json/efthakharcf7db/v1/submissions?form_id=${form_id}&page=${page}&perpage=${perpage}`,
             {
                 headers: {
                     'content-type': 'application/json',
-                    'X-WP-Nonce': efcf7db.nonce
+                    'X-WP-Nonce': efthakharcf7db.nonce
                 }
             }
         )

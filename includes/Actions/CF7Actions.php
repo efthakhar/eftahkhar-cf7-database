@@ -4,17 +4,19 @@ namespace EfthakharCF7DB\Actions;
 
 use DateTime;
 use EfthakharCF7DB\Traits\Singleton;
+use WPCF7_ContactForm;
 
 class CF7Actions {
 	use Singleton;
 	public function __construct() {
 		// Save form info after saving or editing cf7 form
 		add_action('wpcf7_after_save', [$this, 'handle_cf7_save']);
+		add_action('wpcf7_before_send_mail', [$this, 'handle_cf7_submission']);
 		add_action( 'efthakharcf7db_sync_exsisting_cf7forms_event', [$this, 'sync_exsisting_cf7forms'] );
 	}
 
 	public function sync_exsisting_cf7forms() {
-		$contact_forms = \WPCF7_ContactForm::find();
+		$contact_forms = WPCF7_ContactForm::find();
 
 		foreach ($contact_forms as $cf7_form) {
 			$cf7_form->save();
@@ -75,9 +77,42 @@ class CF7Actions {
 				'cf7_id'     => $cf7->id,
 				'name'       => $cf7->title(),
 				'fields'     => json_encode($fields),
-				'created_by' => get_current_user_id()==0?NULL:get_current_user_id(),
+				'created_by' => get_current_user_id() == 0 ? NULL : get_current_user_id(),
 				'created_at' => $currentFormatedDateTime,
 			]);
+		}
+	}
+
+	public function handle_cf7_submission($form) {
+		global $wpdb;
+
+		$currentDateTime         = new DateTime();
+		$currentFormatedDateTime = $currentDateTime->format('Y-m-d H:i:s');
+
+		$entries = [];
+
+		$form_details = $wpdb->get_row("SELECT * FROM {$wpdb->efthakharcf7db_forms} WHERE `cf7_id` = {$form->id} ", ARRAY_A);
+		$form_fields  = json_decode($form_details['fields']);
+
+		$wpdb->insert( $wpdb->efthakharcf7db_submissions, [
+			'form_id' => $form->id,
+			'date'    => $currentFormatedDateTime,
+		] );
+		$form_submission_id = $wpdb->insert_id;
+
+		foreach ($form_fields as $field) {
+			if ('file' != $field->type && 'submit' != $field->type && $_REQUEST[$field->name] ) {
+				array_push($entries, [
+					'submission_id' => $form_submission_id,
+					'form_id'       => $form->id,
+					'field'         => $field->name,
+					'value'         => $_REQUEST[$field->name],
+				]);
+			}
+		}
+
+		foreach ($entries as $entry) {
+			$wpdb->insert( $wpdb->efthakharcf7db_entries, $entry );
 		}
 	}
 }

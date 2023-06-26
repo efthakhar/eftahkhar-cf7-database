@@ -64,7 +64,9 @@ onMounted(() => {
               <td>{{ form.name }}</td>
               <td>
                 <button class="btn btn-sm btn-primary"
-                  @click="router.push({ name: 'submissions', params: { form_id: form.id } })">submissions</button>
+                  @click="router.push({ name: 'submissions', params: { form_id: form.id } })">
+                  submissions
+                </button>
               </td>
             </tr>
           </tbody>

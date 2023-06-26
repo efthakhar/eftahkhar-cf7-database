@@ -57,6 +57,7 @@ class CreateTables {
 
 		$sql = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}efthakharcf7db_entries` (
 			`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			`form_id` bigint(20) unsigned NOT NULL,
 			`submission_id` bigint(20) unsigned NOT NULL,
 			`field` varchar(100) NOT NULL,
 			`value` longtext,
