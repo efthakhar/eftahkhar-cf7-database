@@ -49,18 +49,18 @@ onMounted(() => {
         <table class="table table-hover table-bordered">
           <thead>
             <tr>
-              <!-- <th scope="col" style="width: 30px">
+              <th scope="col" style="width: 30px">
                 <input type="checkbox" />
-              </th> -->
+              </th>
               <th scope="col" class="minwidth-200">Form Name</th>
               <th scope="col" class="minwidth-100">action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="form in forms" :key="form.id">
-              <!-- <th scope="row">
+              <th scope="row">
                 <input type="checkbox" />
-              </th> -->
+              </th>
               <td>{{ form.name }}</td>
               <td>
                 <button class="btn btn-sm btn-primary"

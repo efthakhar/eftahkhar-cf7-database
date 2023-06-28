@@ -22,7 +22,7 @@ class Assets{
         {
             return;
         }
-        
+        wp_deregister_style('wp-admin');
         wp_enqueue_style( 'efthakharcf7db_main_css',  EFTHAKHAR_CF7DB_DIR.'assets/dist/index.css' );
         wp_enqueue_script('efthakharcf7db_main_js',EFTHAKHAR_CF7DB_DIR.'assets/dist/index.js',[],time() ); 
         

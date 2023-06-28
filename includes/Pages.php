@@ -25,8 +25,8 @@ class Pages {
 
 		add_submenu_page(
             'efthakharcf7db', 
-            __( 'home', 'efthakharcf7db' ),
-            __( 'Home', 'efthakharcf7db' ), 
+            __( 'overview', 'efthakharcf7db' ),
+            __( 'Overview', 'efthakharcf7db' ), 
             'manage_options', 
             'admin.php?page=efthakharcf7db#/', 
             NULL

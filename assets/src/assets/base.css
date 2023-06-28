@@ -1,0 +1,27 @@
+/* Hide the WordPress admin sidebar */
+#adminmenuback, #adminmenuwrap, #adminmenu ,#wpadminbar,#wpfooter,#adminmenumain {
+    display: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Adjust the content area width when the sidebar is hidden */
+#wpcontent, #wpfooter {
+    margin-left: 0 !important;
+}
+
+/* Adjust the content area margin when the top bar is hidden */
+#wpbody {
+    margin-top: 0 !important;
+}
+#wpwrap{
+    margin:0px !important;
+
+}
+.wp-admin {
+    margin-top: -17px !important;
+}
+
+#efcf7db_app{
+    min-height: 100vh;
+}

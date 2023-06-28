@@ -72,7 +72,7 @@ final class EfthakharCF7DB {
 		EfthakharCF7DB\Actions\CF7Actions::instance();
 
 		new EfthakharCF7DB\Api\Forms();
-		// new FormCat\Api\Submissions();
+		new EfthakharCF7DB\Api\Submissions();
 	}
 
 

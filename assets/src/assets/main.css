@@ -1,5 +1,6 @@
-/* @import './base.css'; */
+@import './base.css';
 @import './bootstrap.css';
+
 
 /* Utility classes */
 .minwidth-60{min-width: 60px;}
