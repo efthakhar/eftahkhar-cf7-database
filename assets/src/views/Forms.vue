@@ -10,9 +10,9 @@ const forms = ref([]);
 const loading = ref(false)
 const current_page = ref(1)
 const total_pages = ref(1)
-const per_page = ref(10)
+const forms_per_page = ref(10)
 
-async function fetchForms(page = current_page.value, perpage = per_page.value) {
+async function fetchForms(page = current_page.value, perpage = forms_per_page.value) {
   loading.value = true
   await axios
     .get(
@@ -28,9 +28,10 @@ async function fetchForms(page = current_page.value, perpage = per_page.value) {
       forms.value = response.data.forms;
       current_page.value = response.data.current_page
       total_pages.value = response.data.last_page
+      forms_per_page.value = perpage
     })
     .catch((errors) => {
-      //console.log(errors);
+      // console.log(errors);
     });
   loading.value = false
 }
@@ -41,47 +42,66 @@ onMounted(() => {
 
 </script>
 <template>
-  <div class="efcf7db-forms-page p-3">
-    <h3 class="h5 text-dark">Form List</h3>
-    <div class="efcf7db-forms-page__table_container">
+  <div class="efcf7db-forms-page py-1">
+    <div class="wrap">
+      <h1 class="">Form List</h1>
       <Loader v-if="loading == true" />
-      <div class="table-responsive mt-3 data_table efcf7db_table" v-if="loading == false">
-        <table class="table table-hover table-bordered">
+      <div v-if="loading == false">
+        <div class="ecfdb-table-container" >
+        <table class="ecfdb-table">
           <thead>
             <tr>
               <th scope="col" style="width: 30px">
                 <input type="checkbox" />
               </th>
-              <th scope="col" class="minwidth-200">Form Name</th>
-              <th scope="col" class="minwidth-100">action</th>
+              <th class="minwidth-150">Form ID</th>
+              <th class="minwidth-150">Form Name</th>
+              <th class="maxwidth-100 minwidth-60 ml-auto">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="form in forms" :key="form.id">
-              <th scope="row">
+              <th scope="col" style="width: 30px">
                 <input type="checkbox" />
               </th>
+              <td>{{ form.cf7_id }}</td>
               <td>{{ form.name }}</td>
               <td>
-                <button class="btn btn-sm btn-primary"
-                  @click="router.push({ name: 'submissions', params: { form_id: form.id } })">
-                  submissions
-                </button>
+                <button class="button" @click="router.push({ name: 'submissions', params: { form_id: form.id } })">submissions</button>
               </td>
             </tr>
           </tbody>
         </table>
-        <div class="not-found-form d-flex p-2" v-if="forms.length <= 0">
-          <h6 class="text-warning">Opps! No Form Found</h6>
-        </div>
       </div>
-      <!-- padination and per page -->
       <Pagination v-if="loading == false && forms.length > 0"
-        @pageChange="(currentPage) => fetchForms(currentPage, per_page)"
+        @pageChange="(currentPage) => fetchForms(currentPage, forms_per_page)"
         @perPageChange="(perpage) => fetchForms(1, perpage)" :total_pages="total_pages" :current_page="current_page"
-        :per_page="per_page" />
+        :per_page="forms_per_page" />
+      </div>
     </div>
   </div>
 </template>
 
-<style></style>
+<style>
+.ecfdb-table-container {
+  overflow-x: auto;
+  border: 1px solid #c3c4c7 !important;
+}
+
+.ecfdb-table {
+  width: 100% !important;
+  box-shadow: 0 1px 4px rgba(73, 73, 73, 0.04);
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.ecfdb-table thead, tbody tr:not(:last-child) {
+  border-bottom: 1px solid #c3c4c7 !important;
+}
+
+.ecfdb-table th,td {
+  text-align: left;
+  padding: 15px;
+}
+
+</style>

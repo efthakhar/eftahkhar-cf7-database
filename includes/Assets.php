@@ -22,14 +22,15 @@ class Assets{
         {
             return;
         }
-        wp_deregister_style('wp-admin');
+        // wp_deregister_style('wp-admin');
         wp_enqueue_style( 'efthakharcf7db_main_css',  EFTHAKHAR_CF7DB_DIR.'assets/dist/index.css' );
         wp_enqueue_script('efthakharcf7db_main_js',EFTHAKHAR_CF7DB_DIR.'assets/dist/index.js',[],time() ); 
         
         wp_localize_script('efthakharcf7db_main_js','efthakharcf7db',
             [
                 'api_url' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' )
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'admin_url' => get_admin_url()
             ]
         );
     }

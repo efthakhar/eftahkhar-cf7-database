@@ -11,18 +11,19 @@ let item_per_page = ref(props.per_page);
 const emit = defineEmits(["perPageChange"]);
 
 function pageChange(perpage) {
+  item_per_page.value = perpage
   emit("perPageChange", parseInt(perpage));
 }
 </script>
 
 <template>
-  <div class="d-flex mt-5 justify-content-between flex-wrap">
-    <nav aria-label="..." v-if="total_pages > 0">
+  <div class="pagination-perpage-container">
+    <nav v-if="total_pages > 1">
       <ul class="pagination">
         <!-- prev nav -->
-        <li class="page-item" :class="current_page == 1 ? 'disabled' : ''">
+        <li class="page-item" :class="current_page == 1 ? 'display-none' : ''">
           <button
-            class="page-link"
+            class="page-link tablenav-pages-navspan button"
             @click="$emit('pageChange', current_page - 1)"
             :disabled="current_page == 1"
           >
@@ -31,27 +32,27 @@ function pageChange(perpage) {
         </li>
         <!-- first page -->
         <li class="page-item" @click="$emit('pageChange', 1)" v-if="current_page != 1">
-          <button class="page-link me-1">{{ 1 }}</button>
+          <button class="page-link tablenav-pages-navspan button me-1">{{ 1 }}</button>
         </li>
         <!-- current page - 1 -->
         <li
           class="page-item"
-          @click="$emit('pageChange', current_page - 1)"
+          @click="$emit('pageChange', parseInt(current_page) - 1)"
           v-if="current_page - 1 >= 2"
         >
-          <button class="page-link">{{ current_page - 1 }}</button>
+          <button class="page-link tablenav-pages-navspan button">{{ current_page - 1 }}</button>
         </li>
         <!-- current page -->
-        <li class="page-item active" @click="$emit('pageChange', current_page)">
-          <button disabled class="page-link">{{ current_page }}</button>
+        <li class="page-item active" @click="$emit('pageChange', parseInt(current_page))">
+          <button disabled class="page-link tablenav-pages-navspan button">{{ current_page }}</button>
         </li>
         <!-- current page + 1 -->
         <li
           class="page-item"
-          @click="$emit('pageChange', current_page + 1)"
+          @click="$emit('pageChange', parseInt(current_page) + 1)"
           v-if="current_page + 1 <= total_pages - 1"
         >
-          <button class="page-link">{{ current_page + 1 }}</button>
+          <button class="page-link tablenav-pages-navspan button">{{ current_page + 1 }}</button>
         </li>
         <!-- last page -->
         <li
@@ -59,13 +60,13 @@ function pageChange(perpage) {
           @click="$emit('pageChange', total_pages)"
           v-if="current_page != total_pages"
         >
-          <button class="page-link ms-1">{{ total_pages }}</button>
+          <button class="page-link tablenav-pages-navspan button ms-1">{{ total_pages }}</button>
         </li>
         <!-- next nav -->
-        <li class="page-item" :class="current_page == total_pages ? 'disabled' : ''">
+        <li class="page-item" :class="current_page == total_pages ? 'display-none' : ''">
           <button
-            class="page-link"
-            @click="$emit('pageChange', current_page + 1)"
+            class="page-link tablenav-pages-navspan button"
+            @click="$emit('pageChange', parseInt(current_page) + 1)"
             :disabled="current_page == total_pages"
           >
             Next
@@ -93,7 +94,17 @@ function pageChange(perpage) {
 </template>
 
 <style>
+.pagination-perpage-container{
+  margin-top: 15px;
+}
 li.disabled.page-item {
   cursor: not-allowed !important;
 }
+.pagination *{
+  display: inline-block;
+}
+.page-item{
+  margin-right: 4px;
+}
+
 </style>

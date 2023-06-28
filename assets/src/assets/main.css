@@ -1,14 +1,17 @@
 @import './base.css';
-@import './bootstrap.css';
 
 
 /* Utility classes */
+.ml-auto{ margin-left: auto !important;}
+
+.maxwidth-100{min-width: 60px;}
+
 .minwidth-60{min-width: 60px;}
 .minwidth-100{min-width: 100px;}
 .minwidth-150{min-width: 150px;}
 .minwidth-200{min-width: 200px;}
 
-
+.display-none{ display: none !important;}
 .efcf7db_table th{
     font-weight: 400;
 }
