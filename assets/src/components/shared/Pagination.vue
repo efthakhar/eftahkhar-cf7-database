@@ -21,50 +21,57 @@ function pageChange(perpage) {
     <div class="tablenav-pages" v-if="total_pages > 1">
       <span class="pagination-links">
         <!-- prev -->
-        <span @click="$emit('pageChange', (parseInt(current_page) - 1))"
-        class="tablenav-pages-navspan button" 
-        :class="current_page==1?'display-none':''">
+        <span @click="$emit('pageChange', (parseInt(current_page) - 1))" class="tablenav-pages-navspan button"
+          :class="current_page == 1 ? 'display-none' : ''">
           prev
         </span>
 
         <!-- 1st page  -->
-        <span @click="$emit('pageChange', 1 )"
-        class="tablenav-pages-navspan button" 
-        :class="(current_page==1)||( (parseInt(current_page)-1)==1 ) ?'display-none':''" >
+        <span @click="$emit('pageChange', 1)" class="tablenav-pages-navspan button"
+          :class="(current_page == 1) || ((parseInt(current_page) - 1) == 1) || ((parseInt(current_page) - 2) == 1) ? 'display-none' : ''">
           {{ 1 }}
         </span>
 
         <span>&nbsp; </span>
 
+        <!-- current-2  -->
+        <span @click="$emit('pageChange', (parseInt(current_page) - 2))" class="tablenav-pages-navspan button"
+          :class="(current_page == 1)||((parseInt(current_page)-1)==1) ? 'display-none' : ''">
+          {{ (current_page - 2) }}
+        </span>
+
         <!-- current-1  -->
-        <span @click="$emit('pageChange', (parseInt(current_page) - 1))"
-        class="tablenav-pages-navspan button" 
-        :class="current_page==1?'display-none':''" >
+        <span @click="$emit('pageChange', (parseInt(current_page) - 1))" class="tablenav-pages-navspan button"
+          :class="current_page == 1 ? 'display-none' : ''">
           {{ (current_page - 1) }}
         </span>
 
         <!-- current -->
-        <span class="tablenav-pages-navspan button button-primary" >{{ current_page }}</span>
+        <span class="tablenav-pages-navspan button button-primary">{{ current_page }}</span>
 
-         <!-- current-1  -->
-        <span @click="$emit('pageChange', (parseInt(current_page) + 1))"
-        class="tablenav-pages-navspan button"
-        :class="current_page== total_pages?'display-none':''">
+        <!-- current+1  -->
+        <span @click="$emit('pageChange', (parseInt(current_page) + 1))" class="tablenav-pages-navspan button"
+          :class="current_page == total_pages ? 'display-none' : ''">
           {{ (parseInt(current_page) + 1) }}
         </span>
 
-          <span>&nbsp; </span>
-         <!-- last page  -->
-        <span @click="$emit('pageChange', (parseInt(total_pages)))"
-        class="tablenav-pages-navspan button"
-        :class="( (current_page == total_pages) || ( (parseInt(current_page)+1)==total_pages) )  ?'display-none':''">
-          {{ (parseInt(total_pages) ) }}
+        <!-- current+2  -->
+        <span @click="$emit('pageChange', (parseInt(current_page) + 2))" class="tablenav-pages-navspan button"
+          :class="(parseInt(current_page)) == total_pages || ((parseInt(current_page)+1) == total_pages) ? 'display-none' : ''">
+          {{ (parseInt(current_page) + 2) }}
+        </span>
+
+
+        <span>&nbsp; </span>
+        <!-- last page  -->
+        <span @click="$emit('pageChange', (parseInt(total_pages)))" class="tablenav-pages-navspan button"
+          :class="((current_page == total_pages) || ((parseInt(current_page) + 1) == total_pages) || ((parseInt(current_page) + 2) == total_pages)) ? 'display-none' : ''">
+          {{ (parseInt(total_pages)) }}
         </span>
 
         <!-- next -->
         <span @click="$emit('pageChange', (parseInt(current_page) + 1))"
-        :class="current_page== total_pages?'display-none':''"
-        class="tablenav-pages-navspan button " >
+          :class="current_page == total_pages ? 'display-none' : ''" class="tablenav-pages-navspan button ">
           next
         </span>
       </span>
@@ -88,8 +95,11 @@ function pageChange(perpage) {
 </template>
 
 <style>
-.pagination-perpage-container{ margin:10px 0;}
-.pagination-links .tablenav-pages-navspan{
-  margin:10px 4px !important;
+.pagination-perpage-container {
+  margin: 10px 0;
+}
+
+.pagination-links .tablenav-pages-navspan {
+  margin: 10px 4px !important;
 }
 </style>
