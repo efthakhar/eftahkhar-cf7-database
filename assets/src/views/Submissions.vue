@@ -18,9 +18,6 @@ const form_id = ref(route.params.form_id)
 const total_pages = ref(1)
 const s_per_page = ref(10)
 
-
-
-
 async function fetchSubmissions(form_id, page = current_page.value, perpage = s_per_page.value) {
 
   loading.value = true
@@ -88,8 +85,14 @@ onMounted(() => {
 
 <template>
   <div class="efcf7db-page">
-    <h3 class="h3 text-dark">Form Submissions</h3>
-    <div class="efcf7db-forms-page__table_container">
+    <div class="ecfdb-page-header">
+        <div><h2 class="wp-heading-inline"> Form Submissions </h2></div>
+        <div class="ml-auto"> 
+          <button class="button action">Fields Settings</button>
+          <button class="button action ml-15px">Conditions</button>
+        </div>
+    </div>
+    <div class="">
       <Loader v-if="loading == true" />
       <div v-if="loading == false">
         <div class="ecfdb-table-container">
@@ -100,7 +103,7 @@ onMounted(() => {
                   <input type="checkbox" />
                 </th>
                 <th scope="col" class="minwidth-150" v-for="field in visible_fields" :key="field">
-                  {{ fields_alias[field]??'' }}
+                  {{ fields_alias[field] ?? '' }}
                 </th>
                 <th class="maxwidth-100 minwidth-60 ml-auto">Action</th>
               </tr>

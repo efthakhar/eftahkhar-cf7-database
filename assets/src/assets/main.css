@@ -6,8 +6,14 @@
 }
 
 /* Utility classes */
-.ml-auto{ margin-left: auto !important;}
 
+.display-inline-block{ display: inline-block !important;}
+.ml-auto{ margin-left: auto !important;}
+.my-10px{
+  margin-top: 10px !important; 
+  margin-bottom: 10px !important;
+}
+.ml-15px{margin-left: 15px !important;}
 .maxwidth-100{min-width: 60px;}
 
 .minwidth-60{min-width: 60px;}
@@ -18,6 +24,13 @@
 .display-none{ display: none !important;}
 .efcf7db_table th{
     font-weight: 400;
+}
+/* Page header css */
+.ecfdb-page-header{
+  display: flex;
+  align-items:flex-end;
+  margin-bottom:10px;
+  flex-wrap: wrap;
 }
 
 /* table css */
