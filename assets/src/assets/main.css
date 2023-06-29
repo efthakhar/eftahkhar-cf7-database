@@ -1,6 +1,10 @@
 @import './base.css';
 
 
+.efcf7db-page{
+    padding: 20px;
+}
+
 /* Utility classes */
 .ml-auto{ margin-left: auto !important;}
 
@@ -15,3 +19,27 @@
 .efcf7db_table th{
     font-weight: 400;
 }
+
+/* table css */
+.ecfdb-table-container {
+    overflow-x: auto;
+    border: 1px solid #c3c4c7 !important;
+  }
+  
+  .ecfdb-table {
+    width: 100% !important;
+    box-shadow: 0 1px 4px rgba(73, 73, 73, 0.04);
+    border-collapse: collapse;
+    background-color: white;
+  }
+  
+  .ecfdb-table thead,
+  tbody tr:not(:last-child) {
+    border-bottom: 1px solid #c3c4c7 !important;
+  }
+  
+  .ecfdb-table th,
+  td {
+    text-align: left;
+    padding: 15px;
+  }

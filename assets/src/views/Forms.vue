@@ -42,66 +42,47 @@ onMounted(() => {
 
 </script>
 <template>
-  <div class="efcf7db-forms-page py-1">
+  <div class="efcf7db-page py-1">
     <div class="wrap">
       <h1 class="">Form List</h1>
       <Loader v-if="loading == true" />
       <div v-if="loading == false">
-        <div class="ecfdb-table-container" >
-        <table class="ecfdb-table">
-          <thead>
-            <tr>
-              <th scope="col" style="width: 30px">
-                <input type="checkbox" />
-              </th>
-              <th class="minwidth-150">Form ID</th>
-              <th class="minwidth-150">Form Name</th>
-              <th class="maxwidth-100 minwidth-60 ml-auto">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="form in forms" :key="form.id">
-              <th scope="col" style="width: 30px">
-                <input type="checkbox" />
-              </th>
-              <td>{{ form.cf7_id }}</td>
-              <td>{{ form.name }}</td>
-              <td>
-                <button class="button" @click="router.push({ name: 'submissions', params: { form_id: form.id } })">submissions</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <Pagination v-if="loading == false && forms.length > 0"
-        @pageChange="(currentPage) => fetchForms(currentPage, forms_per_page)"
-        @perPageChange="(perpage) => fetchForms(1, perpage)" :total_pages="total_pages" :current_page="current_page"
-        :per_page="forms_per_page" />
+        <div class="ecfdb-table-container">
+          <table class="ecfdb-table">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 30px">
+                  <input type="checkbox" />
+                </th>
+                <th class="minwidth-150">Form ID</th>
+                <th class="minwidth-150">Form Name</th>
+                <th class="maxwidth-100 minwidth-60 ml-auto">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="form in forms" :key="form.id">
+                <th scope="col" style="width: 30px">
+                  <input type="checkbox" />
+                </th>
+                <td>{{ form.cf7_id }}</td>
+                <td>{{ form.name }}</td>
+                <td>
+                  <button class="button"
+                    @click="router.push({ name: 'submissions', params: { form_id: form.cf7_id } })">submissions</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <Pagination v-if="loading == false && forms.length > 0"
+          @pageChange="(currentPage) => fetchForms(currentPage, forms_per_page)"
+          @perPageChange="(perpage) => fetchForms(1, perpage)" :total_pages="total_pages" :current_page="current_page"
+          :per_page="forms_per_page" />
       </div>
     </div>
   </div>
 </template>
 
 <style>
-.ecfdb-table-container {
-  overflow-x: auto;
-  border: 1px solid #c3c4c7 !important;
-}
-
-.ecfdb-table {
-  width: 100% !important;
-  box-shadow: 0 1px 4px rgba(73, 73, 73, 0.04);
-  border-collapse: collapse;
-  background-color: white;
-}
-
-.ecfdb-table thead, tbody tr:not(:last-child) {
-  border-bottom: 1px solid #c3c4c7 !important;
-}
-
-.ecfdb-table th,td {
-  text-align: left;
-  padding: 15px;
-}
 
 </style>
