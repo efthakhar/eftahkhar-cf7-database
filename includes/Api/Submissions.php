@@ -18,112 +18,58 @@ class Submissions {
 	}
 
 	public function get_submissions( $request ) {
-
 		global $wpdb;
-
-       	// 	// Inserting 5 wp_efthakharcf7db_submissions into the "submissions" table
-		// for ($i=0; $i < 1000; $i++) { 
-		// 	$wpdb->query("INSERT INTO wp_efthakharcf7db_submissions (form_id) VALUES (12)");
-		// }
-
-
-
-		// // Retrieve the last inserted submission IDs
-		// $last_submission_id = $wpdb->insert_id;
-
-		// for ($i=1; $i <= 1000; $i++) { 
-		// 	$wpdb->insert( $wpdb->efthakharcf7db_entries, [
-		// 		'submission_id' => $i,
-		// 		'form_id'       => 12,
-		// 		'field'         => 'your-name',
-		// 		'value'         => 'name'.$i,
-		// 	] );
-		// 	$wpdb->insert( $wpdb->efthakharcf7db_entries, [
-		// 		'submission_id' => $i,
-		// 		'form_id'       => 12,
-		// 		'field'         => 'your-email',
-		// 		'value'         => 'email@gm.com'.$i,
-		// 	] );
-		
-			
-		// }
-		
-		// return;
-
-
-          
+         
 		$form_id = $request->get_param('form_id');
 		$page    = $request->get_param('page') ?? 1;
 		$perpage = $request->get_param('perpage') ?? 10;
 		$offset  = $perpage * ( $page - 1 );
-		global $wpdb;
 
+		// get the form details information
 		$form_details = $wpdb->get_row("SELECT * FROM {$wpdb->efthakharcf7db_forms} WHERE `cf7_id` = {$form_id} ", ARRAY_A);
 
-		$visible_fields = json_decode($form_details['fields'], true);
-		$sqlColoms      = '';
-		$conditions     = '';
+		// get the details information of form fields
+		$form_fields_details = json_decode($form_details['fields'], true);
+		// get the names of all possible fileds of this form
+		$form_fields = array_column($form_fields_details, 'name');
 
-		foreach ($visible_fields as $vf) {
-			if (true == $vf['visible']) {
-				$sqlColoms .= "MAX(CASE WHEN e.field = '" . $vf['name'] . "' THEN e.value END) AS '" . $vf['name'] . "',";
-			}
+		$joiningSQL = '';
+		// creating the sql join statement based on all possible fileds
+		for ($i = 0;$i < count($form_fields);++$i) {
+			$joiningSQL .= " INNER JOIN `{$wpdb->efthakharcf7db_entries}` AS e{$i} ON (s.`id` = e{$i}.`submission_id`) ";
 		}
 
-		$sqlColoms = rtrim($sqlColoms, ',');
+		// the main sql part for finding desired grouped entries
+		// based on condition
+		$sqlForDesiredEntries = "FROM {$wpdb->efthakharcf7db_submissions} AS s {$joiningSQL} WHERE 1=1
+			--    AND 
+			-- 	(
+			-- 	  (e1.field = 'your-email' AND e1.value LIKE '%11%')
+			--   )
+		GROUP BY s.id ";
 
-		$matched_results = $wpdb->get_results("SELECT sr.submission_id FROM
-			(
-				SELECT
-				e.submission_id, {$sqlColoms}
-				FROM (
-					SELECT *
-					FROM {$wpdb->efthakharcf7db_entries}
-					WHERE form_id = {$form_id}
-					-- AND
-					-- (
-					-- 	(field = 'your-name' AND value LIKE '%55%')
-					-- 	OR
-					-- 	(field = 'your-email' AND value LIKE '%55%')
-					-- )
-				) AS e
+		// grouped entries based on conditions
+		$grouped_entries = $wpdb->get_results("SELECT s.id {$sqlForDesiredEntries} LIMIT {$perpage} OFFSET {$offset}", ARRAY_A);
 
-		   		GROUP BY e.submission_id
-		   		LIMIT {$perpage} OFFSET {$offset}
-		   ) as sr");
+		// extract only ids as array from founded grouped entries
+		$submission_ids_fulfilling_conditions = array_column($grouped_entries, 'id');
+		// convert array to string format to use in sql
+		$submission_ids_string = implode(',', $submission_ids_fulfilling_conditions);
 
-		$total_rows = $wpdb->get_var("SELECT COUNT(pt.id) FROM (SELECT e.id, {$sqlColoms}
-		FROM (
-			SELECT *
-			FROM {$wpdb->efthakharcf7db_entries}
-			WHERE form_id = {$form_id}
-			-- AND
-			-- (
-			-- 	(field = 'your-name' AND value LIKE '%55%')
-			-- 	OR
-			-- 	(field = 'your-email' AND value LIKE '%55%')
-			-- )
-		) AS e
+		// total number of rows affected by the conditions
+		$total_grouped_entries = $wpdb->query("SELECT COUNT(s.id) {$sqlForDesiredEntries}");
 
-	    GROUP BY e.submission_id) as pt" );
-
-		$matchd_ids = [];
-
-		foreach ($matched_results as $row) {
-			$matchd_ids[] = $row->submission_id;
-		}
-
-		$matchd_ids = implode( ',', $matchd_ids );
-
-		$final_entries = $wpdb->get_results("SELECT * FROM {$wpdb->efthakharcf7db_entries} WHERE submission_id IN ({$matchd_ids}) ");
+		// final entries based on founded submission ids which ids fullfill all conditions
+		$final_entries = $wpdb->get_results("SELECT e.* 
+		FROM {$wpdb->efthakharcf7db_entries} as e 
+		WHERE e.submission_id IN ({$submission_ids_string})", ARRAY_A);
 
 		$data = [
-			'current_page' => $page,
-			'last_page'    => ceil($total_rows / $perpage),
-			'entries'      => $final_entries,
-			// 'submission_ids'              => $submission_ids,
-			// 'fields_visible_in_datatable' => $fields_visible_in_datatable,
-			// 'fields_alias'                => $fields_alias,
+			'current_page'   => $page,
+			'last_page'      => ceil($total_grouped_entries / $perpage),
+			'entries'        => $final_entries,
+			'submission_ids' => $submission_ids_fulfilling_conditions,
+			'fields'         => $form_fields_details,
 		];
 
 		return rest_ensure_response( $data);
