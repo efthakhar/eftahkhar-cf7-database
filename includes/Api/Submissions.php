@@ -42,6 +42,7 @@ class Submissions {
 		// the main sql part for finding desired grouped entries
 		// based on condition
 		$sqlForDesiredEntries = "FROM {$wpdb->efthakharcf7db_submissions} AS s {$joiningSQL} WHERE 1=1
+		   AND s.form_id = {$form_id}
 			--    AND 
 			-- 	(
 			-- 	  (e1.field = 'your-email' AND e1.value LIKE '%11%')
