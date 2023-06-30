@@ -12,6 +12,7 @@ const field_settings_open = ref(false)
 const route = useRoute();
 const submissions = ref([]);
 const submission_ids = ref([])
+const submission_ids_to_export = ref([])
 const loading = ref(false)
 const current_page = ref(1)
 const fields = ref({})
@@ -21,6 +22,9 @@ const form_id = ref(route.params.form_id)
 const total_pages = ref(1)
 const s_per_page = ref(10)
 
+const csvFileDownloadLink = ref('')
+
+const csvDownloadButton = ref(null)
 
 
 async function fetchSubmissions(form_id, page = current_page.value, perpage = s_per_page.value) {
@@ -86,6 +90,32 @@ function handleSaveFieldsSettings() {
   fetchSubmissions(form_id.value, current_page.value, s_per_page.value);
 }
 
+async function getCSV() {
+  let data = 
+  JSON.stringify({ 
+      'visible_fields': visible_fields.value, 
+      'form_id': form_id.value, 
+      'submission_ids': submission_ids_to_export.value, 
+  })
+  await axios.post(
+    `/wp-json/efthakharcf7db/v1/getcsv`,
+    data,
+    {
+      headers: {
+        'content-type': 'application/json',
+        'X-WP-Nonce': efthakharcf7db.nonce
+      }
+    })
+    .then((response) => {
+      // console.log(response.data)
+      csvFileDownloadLink.value = response.data.csv_download_link
+      console.log(csvDownloadButton.value.href)
+    })
+    .catch(error => console.log(error))
+    console.log(csvDownloadButton.value.href)
+    csvDownloadButton.value.click()
+}
+
 onMounted(() => {
   fetchSubmissions(form_id.value, current_page.value, s_per_page.value);
 });
@@ -96,39 +126,44 @@ onMounted(() => {
 <template>
   <div class="efcf7db-page">
     <div class="ecfdb-page-header">
-        <div><h2 class="wp-heading-inline"> Form Submissions </h2></div>
-        <div class="ml-auto"> 
-          <button class="button action" @click="field_settings_open=true">Fields Settings</button>
-          <button class="button action ml-15px">Conditions</button>
-        </div>
+      <div>
+        <h2 class="wp-heading-inline"> Form Submissions </h2>
+      </div>
+      <div class="ml-auto">
+        <button class="button action" @click="field_settings_open = true">Fields Settings</button>
+        <!-- <button class="button action ml-15px">Conditions</button> -->
+        <a target="_blank" :href="csvFileDownloadLink" ref="csvDownloadButton" class="display-none">download</a>
+        <button class="button button-primary ml-15px"  @click="getCSV">Expost CSV</button>
+        <!-- <a class="button button-primary ml-15px" href="admin.php?page=efthakharcf7dbcsv" target="_blank">Expost CSV</a> -->
+      </div>
     </div>
     <div class="page-main-content">
       <Loader v-if="loading == true" />
-      <div v-if="loading == false">
+      <div v-if="loading == false && visible_fields.length > 0">
         <div class="ecfdb-table-container">
           <table class="ecfdb-table">
             <thead>
               <tr>
-                <th scope="col" style="width: 30px">
+                <!-- <th scope="col" style="width: 30px">
                   <input type="checkbox" />
-                </th>
+                </th> -->
                 <th scope="col" class="minwidth-150" v-for="field in visible_fields" :key="field">
                   {{ fields_alias[field] ?? '' }}
                 </th>
-                <th class="maxwidth-100 minwidth-60 ml-auto">Action</th>
+                <!-- <th class="maxwidth-100 minwidth-60 ml-auto">Action</th> -->
               </tr>
             </thead>
             <tbody>
               <tr v-for="submission in submissions" :key="submission.id">
-                <th scope="col" style="width: 30px">
+                <!-- <th scope="col" style="width: 30px">
                   <input type="checkbox" />
-                </th>
+                </th> -->
                 <td v-for="field in visible_fields">
                   {{ submission[field] }}
                 </td>
-                <td>
+                <!-- <td>
                   <button>action</button>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>
@@ -142,8 +177,8 @@ onMounted(() => {
     </div>
     <div class="page-modals-container" v-if="field_settings_open">
       <div class="efcf7db-page-modals">
-        <Fields @SaveSettings="handleSaveFieldsSettings" :form_id=form_id  :fields=fields v-if="field_settings_open==true" />
+        <Fields @SaveSettings="handleSaveFieldsSettings" :form_id=form_id :fields=fields
+          v-if="field_settings_open == true" />
       </div>
     </div>
-  </div>
-</template>
+</div></template>

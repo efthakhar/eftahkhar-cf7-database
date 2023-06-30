@@ -51,9 +51,9 @@ onMounted(() => {
           <table class="ecfdb-table">
             <thead>
               <tr>
-                <th scope="col" style="width: 30px">
+                <!-- <th scope="col" style="width: 30px">
                   <input type="checkbox" />
-                </th>
+                </th> -->
                 <th class="minwidth-150">Form ID</th>
                 <th class="minwidth-150">Form Name</th>
                 <th class="maxwidth-100 minwidth-60 ml-auto">Action</th>
@@ -61,9 +61,9 @@ onMounted(() => {
             </thead>
             <tbody>
               <tr v-for="form in forms" :key="form.id">
-                <th scope="col" style="width: 30px">
+                <!-- <th scope="col" style="width: 30px">
                   <input type="checkbox" />
-                </th>
+                </th> -->
                 <td>{{ form.cf7_id }}</td>
                 <td>{{ form.name }}</td>
                 <td>

@@ -13,6 +13,7 @@ class Pages {
 	}
 
 	public function efthakharcf7db_register_admin_pages() {
+
 		add_menu_page(
             __( 'efthakharcf7db', 'efthakharcf7db' ),
             __( 'Efthkhar CF7 DB', 'efthakharcf7db' ), 
@@ -22,6 +23,7 @@ class Pages {
             'dashicons-database-import', 
             2000
         );
+
 
 		add_submenu_page(
             'efthakharcf7db', 
@@ -41,7 +43,20 @@ class Pages {
             NULL
         );
 
-		remove_submenu_page('efthakharcf7db', 'efthakharcf7db');	
+		remove_submenu_page('efthakharcf7db', 'efthakharcf7db');
+        
+        
+        add_menu_page(
+            __( 'efthakharcf7db-getcsv', 'efthakharcf7db' ),
+            __( 'efthakharcf7db-getcsv', 'efthakharcf7db' ), 
+            'manage_options', 
+            'efthakharcf7db-getcsv', 
+            NULL, 
+            'dashicons-database-import', 
+            2000
+        );
+        remove_menu_page('efthakharcf7db-getcsv');
+
 	}
 
 	public function efthakharcf7db_admin_page_contents() {
