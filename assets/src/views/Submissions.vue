@@ -5,6 +5,9 @@ import axios from 'axios'
 
 import Loader from "../components/shared/Loader.vue";
 import Pagination from "../components/shared/Pagination.vue"
+import Fields from '../components/Fields.vue';
+
+const field_settings_open = ref(false)
 
 const route = useRoute();
 const submissions = ref([]);
@@ -17,6 +20,8 @@ const visible_fields = ref([])
 const form_id = ref(route.params.form_id)
 const total_pages = ref(1)
 const s_per_page = ref(10)
+
+
 
 async function fetchSubmissions(form_id, page = current_page.value, perpage = s_per_page.value) {
 
@@ -76,6 +81,11 @@ function generate_submission_rows(entries_array) {
   return submissions;
 }
 
+function handleSaveFieldsSettings() {
+  field_settings_open.value = false
+  fetchSubmissions(form_id.value, current_page.value, s_per_page.value);
+}
+
 onMounted(() => {
   fetchSubmissions(form_id.value, current_page.value, s_per_page.value);
 });
@@ -88,11 +98,11 @@ onMounted(() => {
     <div class="ecfdb-page-header">
         <div><h2 class="wp-heading-inline"> Form Submissions </h2></div>
         <div class="ml-auto"> 
-          <button class="button action">Fields Settings</button>
+          <button class="button action" @click="field_settings_open=true">Fields Settings</button>
           <button class="button action ml-15px">Conditions</button>
         </div>
     </div>
-    <div class="">
+    <div class="page-main-content">
       <Loader v-if="loading == true" />
       <div v-if="loading == false">
         <div class="ecfdb-table-container">
@@ -128,6 +138,11 @@ onMounted(() => {
           @pageChange="(currentPage) => fetchSubmissions(form_id, currentPage, s_per_page)"
           @perPageChange="(perpage) => fetchSubmissions(form_id, 1, perpage)" :total_pages="total_pages"
           :current_page="current_page" :per_page="s_per_page" />
+      </div>
+    </div>
+    <div class="page-modals-container" v-if="field_settings_open">
+      <div class="efcf7db-page-modals">
+        <Fields @SaveSettings="handleSaveFieldsSettings" :form_id=form_id  :fields=fields v-if="field_settings_open==true" />
       </div>
     </div>
   </div>

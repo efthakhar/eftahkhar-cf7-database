@@ -1,58 +1,133 @@
 @import './base.css';
 
 
-.efcf7db-page{
-    padding: 20px;
+.efcf7db-page {
+  padding: 20px;
 }
 
 /* Utility classes */
 
-.display-inline-block{ display: inline-block !important;}
-.ml-auto{ margin-left: auto !important;}
-.my-10px{
-  margin-top: 10px !important; 
+.display-inline-block {
+  display: inline-block !important;
+}
+
+.p10px {
+  padding: 10px;
+}
+
+.p15px {
+  padding: 15px;
+}
+
+.ml-auto {
+  margin-left: auto !important;
+}
+
+.my-10px {
+  margin-top: 10px !important;
   margin-bottom: 10px !important;
 }
-.ml-15px{margin-left: 15px !important;}
-.maxwidth-100{min-width: 60px;}
 
-.minwidth-60{min-width: 60px;}
-.minwidth-100{min-width: 100px;}
-.minwidth-150{min-width: 150px;}
-.minwidth-200{min-width: 200px;}
-
-.display-none{ display: none !important;}
-.efcf7db_table th{
-    font-weight: 400;
+.ml-15px {
+  margin-left: 15px !important;
 }
+.ml-10px {
+  margin-left: 10px !important;
+}
+
+.maxwidth-100 {
+  min-width: 60px;
+}
+
+.minwidth-60 {
+  min-width: 60px;
+}
+
+.minwidth-100 {
+  min-width: 100px;
+}
+
+.minwidth-150 {
+  min-width: 150px;
+}
+
+.minwidth-200 {
+  min-width: 200px;
+}
+
+.display-none {
+  display: none !important;
+}
+
+.efcf7db_table th {
+  font-weight: 400;
+}
+
 /* Page header css */
-.ecfdb-page-header{
+.ecfdb-page-header {
   display: flex;
-  align-items:flex-end;
-  margin-bottom:10px;
+  align-items: flex-end;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
 /* table css */
 .ecfdb-table-container {
-    overflow-x: auto;
-    border: 1px solid #c3c4c7 !important;
-  }
-  
-  .ecfdb-table {
-    width: 100% !important;
-    box-shadow: 0 1px 4px rgba(73, 73, 73, 0.04);
-    border-collapse: collapse;
-    background-color: white;
-  }
-  
-  .ecfdb-table thead,
-  tbody tr:not(:last-child) {
-    border-bottom: 1px solid #c3c4c7 !important;
-  }
-  
-  .ecfdb-table th,
-  td {
-    text-align: left;
-    padding: 15px;
-  }
+  overflow-x: auto;
+  border: 1px solid #c3c4c7 !important;
+}
+
+.ecfdb-table {
+  width: 100% !important;
+  box-shadow: 0 1px 4px rgba(73, 73, 73, 0.04);
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.ecfdb-table thead,
+tbody tr:not(:last-child) {
+  border-bottom: 1px solid #c3c4c7 !important;
+}
+
+.ecfdb-table th,
+td {
+  text-align: left;
+  padding: 15px;
+}
+
+/* Page Modals */
+.efcf7db-page-modals {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000d4;
+  z-index: 10400
+}
+
+.efcf7db-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 500px;
+  display: block;
+  background-color: white;
+}
+
+.cf7db-list-table {
+  border: 1px solid #c3c4c7;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cf7db-list-table tr:not(:last-child) {
+  border-bottom: 1px solid #c3c4c7 ;
+}
+
+.cf7db-list-table td, th {
+  padding: 10px;
+  text-align: left;
+}
