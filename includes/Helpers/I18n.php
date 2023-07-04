@@ -1,6 +1,6 @@
 <?php
 
-namespace EfthakharCF7DB\Helper;
+namespace EfthakharCF7DB\Helpers;
 
 class I18n
 {

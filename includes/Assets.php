@@ -3,7 +3,7 @@
 
 namespace EfthakharCF7DB;
 
-use EfthakharCF7DB\Helper\I18n;
+use EfthakharCF7DB\Helpers\I18n;
 use EfthakharCF7DB\Traits\Singleton;
 
 class Assets{
