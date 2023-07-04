@@ -3,6 +3,7 @@
 
 namespace EfthakharCF7DB;
 
+use EfthakharCF7DB\Helper\I18n;
 use EfthakharCF7DB\Traits\Singleton;
 
 class Assets{
@@ -30,7 +31,8 @@ class Assets{
             [
                 'api_url' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
-                'admin_url' => get_admin_url()
+                'admin_url' => get_admin_url(),
+                'tr' => I18n::translations()
             ]
         );
     }

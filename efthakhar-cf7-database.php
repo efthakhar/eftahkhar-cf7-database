@@ -56,11 +56,22 @@ final class EfthakharCF7DB {
 	}
 
 	public function init_plugin() {
+		
+		// Localize our plugin
+		add_action( 'init', [ $this, 'localization_setup' ] );
+
 		$this->init_classes();
 		do_action( 'efthakharcf7db_loaded' );
 	}
 
-	
+	/**
+	 * Initialize plugin for localization.
+	 *
+	 * @uses load_plugin_textdomain()
+	 */
+	public function localization_setup() {
+		load_plugin_textdomain( 'eftahkhar-cf7-database', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	}
 
 	public function init_classes() {
 

@@ -1,0 +1,67 @@
+# Copyright (C) 2023 Efthakhar Bin Alam
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: Efthakhar CF7 Database 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/efthakhar-cf7-database\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-07-04T19:23:23+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+
+#. Plugin Name of the plugin
+msgid "Efthakhar CF7 Database"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/plugins/eftahkhar-cf7-database"
+msgstr ""
+
+#. Description of the plugin
+msgid "Save, Filter and Export Contact From 7 Submissions"
+msgstr ""
+
+#. Author of the plugin
+msgid "Efthakhar Bin Alam"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://github.com/efthakhar"
+msgstr ""
+
+#: includes/Helpers/I18n.php:11
+msgid "Welcome"
+msgstr ""
+
+#: includes/Helpers/I18n.php:12
+msgid "Export CSV"
+msgstr ""
+
+#: includes/Helpers/I18n.php:13
+msgid "Field Settings"
+msgstr ""
+
+#: includes/Pages.php:18
+msgid "efthakharcf7db"
+msgstr ""
+
+#: includes/Pages.php:19
+msgid "Efthkhar CF7 DB"
+msgstr ""
+
+#: includes/Pages.php:39
+msgid "forms"
+msgstr ""
+
+#: includes/Pages.php:40
+msgid "Forms"
+msgstr ""
+
+#: includes/Pages.php:50
+#: includes/Pages.php:51
+msgid "efthakharcf7db-getcsv"
+msgstr ""
