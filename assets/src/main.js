@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import axios from "axios";
 
 import App from './App.vue'
 import router from './router'
@@ -13,4 +12,5 @@ app.use(createPinia())
 app.use(router)
 
 app.config.globalProperties.$tr = efthakharcf7db.tr
+
 app.mount('#efcf7db_app')

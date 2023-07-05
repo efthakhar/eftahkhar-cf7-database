@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Efthakhar CF7 Database
-Plugin URI: https://wordpress.org/plugins/eftahkhar-cf7-database
-Description: Save, Filter and Export Contact From 7 Submissions
+Plugin URI: https://wordpress.org/plugins/efthakhar-cf7-database
+Description: Save & Export Contact From 7 Submissions
 Author: Efthakhar Bin Alam
 Author URI: https://github.com/efthakhar
-Text Domain: eftahkhar-cf7-database
+Text Domain: efthakhar-cf7-database
 Domain Path: /languages/
 Version: 1.0.0
 License: GPL2
@@ -70,7 +70,7 @@ final class EfthakharCF7DB {
 	 * @uses load_plugin_textdomain()
 	 */
 	public function localization_setup() {
-		load_plugin_textdomain( 'eftahkhar-cf7-database', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'efthakhar-cf7-database', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	public function init_classes() {

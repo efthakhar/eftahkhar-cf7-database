@@ -6,7 +6,7 @@ import AdminView from '../views/Admin.vue'
 
 
 const router = createRouter({
-  history: createWebHistory(document.location.origin + document.location.pathname + '?page=efthakharcf7db#'),
+  history: createWebHistory(efthakharcf7db.plugin_main_page_url),
   routes: [{
       path: '/',
       name: 'admin',
@@ -15,26 +15,23 @@ const router = createRouter({
         {
           path: '',
           name: 'overview',
-          component: () => import('../views/OverView.vue'),
+          // component: () => import('../views/OverView.vue'),
+          redirect: { name: 'forms' }
         },
         {
           path: '/forms',
           name: 'forms',
           component: () => import('../views/Forms.vue'),
+        },
+        {
+          path: '/submissions/:form_id',
+          name: 'submissions',
+          component: () => import('../views/Submissions.vue'),
         }
       ]
     },
 
-    // {
-    //   path: '/forms',
-    //   name: 'forms',
-    //   component: () => import('../views/Forms.vue'),
-    // },
-    {
-      path: '/submissions/:form_id',
-      name: 'submissions',
-      component: () => import('../views/Submissions.vue'),
-    }
+    
   ]
 })
 

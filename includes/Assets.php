@@ -32,6 +32,7 @@ class Assets{
                 'api_url' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'admin_url' => get_admin_url(),
+                'plugin_main_page_url' =>  admin_url('admin.php').'?page=efthakharcf7db#',
                 'tr' => I18n::translations()
             ]
         );

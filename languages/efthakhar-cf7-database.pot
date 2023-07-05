@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-07-04T19:23:23+00:00\n"
+"POT-Creation-Date: 2023-07-05T15:00:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 
@@ -18,7 +18,7 @@ msgid "Efthakhar CF7 Database"
 msgstr ""
 
 #. Plugin URI of the plugin
-msgid "https://wordpress.org/plugins/eftahkhar-cf7-database"
+msgid "https://wordpress.org/plugins/efthakhar-cf7-database"
 msgstr ""
 
 #. Description of the plugin
@@ -38,11 +38,72 @@ msgid "Welcome"
 msgstr ""
 
 #: includes/Helpers/I18n.php:12
-msgid "Export CSV"
+msgid "Cancle"
 msgstr ""
 
 #: includes/Helpers/I18n.php:13
+msgid "Save"
+msgstr ""
+
+#: includes/Helpers/I18n.php:14
+msgid "Delete"
+msgstr ""
+
+#: includes/Helpers/I18n.php:15
+msgid "Action"
+msgstr ""
+
+#: includes/Helpers/I18n.php:16
+msgid "Submissions"
+msgstr ""
+
+#: includes/Helpers/I18n.php:17
+msgid "ID"
+msgstr ""
+
+#: includes/Helpers/I18n.php:20
+msgid "Form"
+msgstr ""
+
+#: includes/Helpers/I18n.php:21
+#: includes/Pages.php:40
+msgid "Forms"
+msgstr ""
+
+#: includes/Helpers/I18n.php:22
+msgid "Form List"
+msgstr ""
+
+#: includes/Helpers/I18n.php:23
+msgid "Form ID"
+msgstr ""
+
+#: includes/Helpers/I18n.php:24
+msgid "Form Name"
+msgstr ""
+
+#: includes/Helpers/I18n.php:27
+msgid "Export CSV"
+msgstr ""
+
+#: includes/Helpers/I18n.php:28
 msgid "Field Settings"
+msgstr ""
+
+#: includes/Helpers/I18n.php:29
+msgid "Fields"
+msgstr ""
+
+#: includes/Helpers/I18n.php:30
+msgid "Field"
+msgstr ""
+
+#: includes/Helpers/I18n.php:31
+msgid "Alias"
+msgstr ""
+
+#: includes/Helpers/I18n.php:32
+msgid "Visible"
 msgstr ""
 
 #: includes/Pages.php:18
@@ -55,10 +116,6 @@ msgstr ""
 
 #: includes/Pages.php:39
 msgid "forms"
-msgstr ""
-
-#: includes/Pages.php:40
-msgid "Forms"
 msgstr ""
 
 #: includes/Pages.php:50
