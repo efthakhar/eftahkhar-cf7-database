@@ -12,7 +12,10 @@ const field_settings_open = ref(false)
 const route = useRoute();
 const submissions = ref([]);
 const submission_ids = ref([])
-const submission_ids_to_export = ref([])
+
+const selected_submission_ids = ref([])
+const all_selectd = ref(false);
+
 const loading = ref(false)
 const current_page = ref(1)
 const fields = ref({})
@@ -78,11 +81,12 @@ function generate_submission_rows(entries_array) {
       obj[submission_id] = {};
     }
 
-    obj[submission_id]['id'] = id;
+    obj[submission_id]['id'] = submission_id;
     obj[submission_id][field] = value;
 
     return obj;
   }, {});
+  // console.log(submissions)
   return submissions;
 }
 
@@ -97,7 +101,8 @@ async function getCSV() {
       'visible_fields': visible_fields.value, 
       'fields_alias': fields_alias.value, 
       'form_id': form_id.value, 
-      'submission_ids': submission_ids_to_export.value, 
+      'submission_ids': selected_submission_ids.value, 
+
   })
 
   await axios.post(
@@ -118,6 +123,20 @@ async function getCSV() {
     console.log(csvDownloadButton.value.href)
     csvDownloadButton.value.click()
 }
+
+function select_all() {
+  if (all_selectd.value == false) {
+    selected_submission_ids.value = [];
+    submission_ids.value.forEach((element) => {
+      selected_submission_ids.value.push(element);
+    });
+    all_selectd.value = true;
+  } else {
+    all_selectd.value = false;
+    selected_submission_ids.value = [];
+  }
+}
+
 
 onMounted(() => {
   fetchSubmissions(form_id.value, current_page.value, s_per_page.value);
@@ -149,9 +168,10 @@ onMounted(() => {
           <table class="ecfdb-table">
             <thead>
               <tr>
-                <!-- <th scope="col" style="width: 30px">
-                  <input type="checkbox" />
-                </th> -->
+                <th scope="col" style="width: 30px">
+                  <input type="checkbox" @click="select_all" />
+                </th>
+                <th class="minwidth-150">{{ $tr.id }}</th>
                 <th scope="col" class="minwidth-150" v-for="field in visible_fields" :key="field">
                   {{ fields_alias[field] ?? '' }}
                 </th>
@@ -160,9 +180,10 @@ onMounted(() => {
             </thead>
             <tbody>
               <tr v-for="submission in submissions" :key="submission.id">
-                <!-- <th scope="col" style="width: 30px">
-                  <input type="checkbox" />
-                </th> -->
+                <th scope="col" style="width: 30px">
+                  <input type="checkbox" v-model="selected_submission_ids"  :value="submission.id"/>
+                </th>
+                <td class="minwidth-150">{{ submission.id }}</td>
                 <td v-for="field in visible_fields">
                   {{ submission[field] }}
                 </td>

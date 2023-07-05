@@ -13,6 +13,7 @@ class I18n
             "save" => esc_html__("Save", "efthakhar-cf7-database"), 
             "action" => esc_html__("Action", "efthakhar-cf7-database"), 
             "submissions" => esc_html__("Submissions", "efthakhar-cf7-database"),
+            "id" => esc_html__("ID", "efthakhar-cf7-database"),
              
             // form
             "form" => esc_html__("Form", "efthakhar-cf7-database"), 

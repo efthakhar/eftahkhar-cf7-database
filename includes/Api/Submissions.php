@@ -11,7 +11,7 @@ class Submissions {
 	}
 
 	public function efthakharcf7db_submissions_routes() {
-		register_rest_route( 'efthakharcf7db/v1', '/submissions/', [
+		register_rest_route( 'efthakharcf7db/v1', '/submissions', [
 			'methods'             => 'GET',
 			'callback'            => [$this, 'get_submissions'],
 			'permission_callback' => [ $this, 'get_submissions_permissions_check' ],
@@ -91,7 +91,7 @@ class Submissions {
 		$visible_fields = $parameters['visible_fields'] ?? [];
 		$fields_alias   = $parameters['fields_alias'] ?? [];
 		$form_id        = $parameters['form_id'];
-		$submission_ids = $parameters['$submission_ids'];
+		$submission_ids = $parameters['submission_ids'];
 		// if no submission id provided file will be generated for all submission ids
 
 		// create a temporary csv file in files folder
@@ -118,6 +118,7 @@ class Submissions {
 		// visit all rows get from database
 
 		if (empty($submission_ids)) {
+
 			$total_submissions = $wpdb->get_var("SELECT COUNT(s.id) FROM {$wpdb->efthakharcf7db_submissions} as s WHERE s.form_id={$form_id}");
 
 			$total_page = ceil($total_submissions / 100);
@@ -151,6 +152,33 @@ class Submissions {
 					fwrite($file_handle, $csv_line . PHP_EOL);
 				}
 			}
+		}else{
+
+			$submission_ids_string = implode(',', $submission_ids);
+
+			$submision_entries = $wpdb->get_results("SELECT e.* FROM {$wpdb->efthakharcf7db_entries} as e 
+			WHERE e.submission_id IN ({$submission_ids_string})", ARRAY_A);
+
+			$structred_submisions = [];
+
+			foreach ($submision_entries  as  $sr) {
+				$structred_submisions[ $sr['submission_id'] ][$sr['field']] = $sr['value'];
+			}
+
+			// after creating a submission array put it in generated csv by looping its elements in order of visible fields
+			// In this way generate csv line from every rows
+			foreach ($structred_submisions as $ssr) {
+				$csv_line = '';
+
+				foreach ($visible_fields as $vfield) {
+					$value = $ssr[$vfield] ?? '';
+					$csv_line .= ',' . $value;
+				}
+				$csv_line = ltrim($csv_line, ',');
+				fwrite($file_handle, $csv_line . PHP_EOL);
+			}
+		
+
 		}
 
 		// return the csv file path in wp rest api
