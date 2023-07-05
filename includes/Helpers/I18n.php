@@ -11,6 +11,7 @@ class I18n
             "welcome" => esc_html__("Welcome", "efthakhar-cf7-database"), 
             "cancle" => esc_html__("Cancle", "efthakhar-cf7-database"), 
             "save" => esc_html__("Save", "efthakhar-cf7-database"), 
+            "delete" => esc_html__("Delete", "efthakhar-cf7-database"), 
             "action" => esc_html__("Action", "efthakhar-cf7-database"), 
             "submissions" => esc_html__("Submissions", "efthakhar-cf7-database"),
             "id" => esc_html__("ID", "efthakhar-cf7-database"),

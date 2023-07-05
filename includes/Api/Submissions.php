@@ -2,6 +2,7 @@
 
 namespace EfthakharCF7DB\Api;
 
+use Throwable;
 use WP_Error;
 
 class Submissions {
@@ -22,6 +23,38 @@ class Submissions {
 			'callback'            => [$this, 'get_csv_file'],
 			'permission_callback' => [ $this, 'get_csv_file_permissions_check' ],
 		]);
+
+		register_rest_route('efthakharcf7db/v1', '/delete-submissions', [
+			'methods'             => 'POST',
+			'callback'            => [$this, 'delete_submissions'],
+			'permission_callback' => [ $this, 'delete_submissions_permissions_check' ],
+		]);
+	}
+
+	public function delete_submissions($request) {
+		global $wpdb;
+		// get the form id , fiedls visible in csv and submission ids
+		$parameters     = $request->get_json_params();
+		$submission_ids = $parameters['submission_ids'] ?? [];
+		$submission_ids = implode( ',', array_map( 'intval', $submission_ids ) );
+
+		$delete_submission = $wpdb->query( "DELETE FROM {$wpdb->efthakharcf7db_entries} WHERE submission_id IN ({$submission_ids})" );
+		$delete_entries    = $wpdb->query( "DELETE FROM {$wpdb->efthakharcf7db_submissions} WHERE id IN ({$submission_ids})" );
+
+		if($delete_submission&&$delete_entries){
+			return rest_ensure_response( [
+				'message' => 'submissions deleted',
+			]);
+		}
+		return new WP_Error( );
+	}
+
+	public function delete_submissions_permissions_check( $request ) {
+		if ( current_user_can( 'efthakharcf7db_delete_submissions' ) ) {
+			return true;
+		}
+
+		return new WP_Error( 'rest_forbidden', 'you cannot view forms', [ 'status' => 403 ] );
 	}
 
 	public function get_submissions( $request ) {
@@ -62,7 +95,7 @@ class Submissions {
 		// total number of rows affected by the conditions
 		$total_grouped_entries = $wpdb->query("SELECT COUNT(s.id) {$sqlForDesiredEntries}");
 
-		// final entries based on founded submission ids which ids fullfill all conditions
+		// final entries based on founded submission ids which ids fulfill all conditions
 		$final_entries = $wpdb->get_results("SELECT e.* FROM {$wpdb->efthakharcf7db_entries} as e WHERE e.submission_id IN ({$submission_ids_string})", ARRAY_A);
 
 		$data = [
@@ -92,7 +125,6 @@ class Submissions {
 		$fields_alias   = $parameters['fields_alias'] ?? [];
 		$form_id        = $parameters['form_id'];
 		$submission_ids = $parameters['submission_ids'];
-		// if no submission id provided file will be generated for all submission ids
 
 		// create a temporary csv file in files folder
 		$filename    = uniqid('submission-') . get_current_user_id() . '.csv';
@@ -103,29 +135,21 @@ class Submissions {
 		$csv_columns = '';
 
 		foreach ($visible_fields as $vfield) {
-			// $csv_columns .= ',' . $vfield; 
-			$csv_columns .= ',' . $fields_alias[$vfield]; 
+			// $csv_columns .= ',' . $vfield;
+			$csv_columns .= ',' . $fields_alias[$vfield];
 		}
 		$csv_columns = ltrim($csv_columns, ',');
 
 		fwrite($file_handle, $csv_columns . PHP_EOL);
 
-		// get the rows from database with pagination for 100 submission ids per page
-		// with all rows found for 100 submission id s in each chunk create array of arrays where each array
-		// will hold all necessary info of specific submission id as associative array
-
-		// create temporary empty array of arrays name structured_s_chunk
-		// visit all rows get from database
-
 		if (empty($submission_ids)) {
-
 			$total_submissions = $wpdb->get_var("SELECT COUNT(s.id) FROM {$wpdb->efthakharcf7db_submissions} as s WHERE s.form_id={$form_id}");
 
 			$total_page = ceil($total_submissions / 100);
 
 			for ($page = 1;$page <= $total_page;++$page) {
 				$offset = 100 * ( $page - 1 );
-				// getting submission ids for current page
+
 				$submission_ids_chunk        = $wpdb->get_results($wpdb->prepare("SELECT s.id  FROM {$wpdb->efthakharcf7db_submissions} as s WHERE s.form_id={$form_id}  LIMIT %d OFFSET %d", 100, $offset), ARRAY_A);
 				$submission_ids_chunk        = array_column($submission_ids_chunk, 'id');
 				$submission_ids_chunk_string = implode(',', $submission_ids_chunk);
@@ -139,8 +163,6 @@ class Submissions {
 					$structred_submisions_chunk[ $sr['submission_id'] ][$sr['field']] = $sr['value'];
 				}
 
-				// after creating a submission array put it in generated csv by looping its elements in order of visible fields
-				// In this way generate csv line from every rows
 				foreach ($structred_submisions_chunk as $ssr) {
 					$csv_line = '';
 
@@ -152,8 +174,7 @@ class Submissions {
 					fwrite($file_handle, $csv_line . PHP_EOL);
 				}
 			}
-		}else{
-
+		} else {
 			$submission_ids_string = implode(',', $submission_ids);
 
 			$submision_entries = $wpdb->get_results("SELECT e.* FROM {$wpdb->efthakharcf7db_entries} as e 
@@ -165,8 +186,6 @@ class Submissions {
 				$structred_submisions[ $sr['submission_id'] ][$sr['field']] = $sr['value'];
 			}
 
-			// after creating a submission array put it in generated csv by looping its elements in order of visible fields
-			// In this way generate csv line from every rows
 			foreach ($structred_submisions as $ssr) {
 				$csv_line = '';
 
@@ -177,19 +196,7 @@ class Submissions {
 				$csv_line = ltrim($csv_line, ',');
 				fwrite($file_handle, $csv_line . PHP_EOL);
 			}
-		
-
 		}
-
-		// return the csv file path in wp rest api
-		// don't return the csv file directly
-		// return a custom admin page path with query parameter csvfilename=generatedcsv.csv
-		// in the custom admin page first check if user have permission to get csv data
-		// if security check pass, include the generated csv file according to
-		// query parameter's csvfilename value
-		// modify header information such that if anyone visit the page the file download automatically
-		// after all header works, delete the csv file
-		// finally exit()
 
 		return rest_ensure_response([
 			'csv_download_link' => admin_url() . 'admin.php?page=efthakharcf7db-getcsv&file=' . $file_path,

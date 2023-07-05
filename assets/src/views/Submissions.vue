@@ -115,12 +115,10 @@ async function getCSV() {
       }
     })
     .then((response) => {
-      // console.log(response.data)
       csvFileDownloadLink.value = response.data.csv_download_link
-      console.log(csvDownloadButton.value.href)
+      // console.log(csvDownloadButton.value.href)
     })
     .catch(error => console.log(error))
-    console.log(csvDownloadButton.value.href)
     csvDownloadButton.value.click()
 }
 
@@ -137,6 +135,28 @@ function select_all() {
   }
 }
 
+async function deleteSelected() {
+  let data = 
+  JSON.stringify({ 
+    'submission_ids': selected_submission_ids.value, 
+  })
+
+  await axios.post(
+    `/wp-json/efthakharcf7db/v1/delete-submissions`,
+    data,
+    {
+      headers: {
+        'content-type': 'application/json',
+        'X-WP-Nonce': efthakharcf7db.nonce
+      }
+    })
+    .then((response) => {
+      fetchSubmissions(form_id.value, current_page.value, s_per_page.value);
+      selected_submission_ids.value = []
+    })
+    .catch(error => console.log('error'))
+    
+}
 
 onMounted(() => {
   fetchSubmissions(form_id.value, current_page.value, s_per_page.value);
@@ -159,6 +179,10 @@ onMounted(() => {
         <button class="button button-primary ml-15px"  @click="getCSV"> 
           {{ $tr.export_csv }} 
         </button>
+        <button v-if="selected_submission_ids.length>0"
+        class="button button-primary ml-15px" 
+        style="border:none; background-color: rgb(190, 11, 11) !important; color:white"  
+        @click="deleteSelected">   {{ $tr.delete }}  </button>
       </div>
     </div>
     <div class="page-main-content">
