@@ -39,7 +39,7 @@ async function fetchSubmissions(form_id, page = current_page.value, perpage = s_
   }
   await axios
     .get(
-      `/wp-json/efthakharcf7db/v1/submissions?form_id=${form_id}&page=${page}&perpage=${perpage}`,
+      `${efthakharcf7db.api_url}efthakharcf7db/v1/submissions?form_id=${form_id}&page=${page}&perpage=${perpage}`,
       {
         headers: {
           'content-type': 'application/json',
@@ -106,7 +106,7 @@ async function getCSV() {
   })
 
   await axios.post(
-    `/wp-json/efthakharcf7db/v1/getcsv`,
+    `${efthakharcf7db.api_url}efthakharcf7db/v1/getcsv`,
     data,
     {
       headers: {
@@ -142,7 +142,7 @@ async function deleteSelected() {
   })
 
   await axios.post(
-    `/wp-json/efthakharcf7db/v1/delete-submissions`,
+    `${efthakharcf7db.api_url}efthakharcf7db/v1/delete-submissions`,
     data,
     {
       headers: {

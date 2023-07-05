@@ -15,7 +15,7 @@ const form_id = ref(props.form_id);
 function save() {
     axios.put(
     
-    `/wp-json/efthakharcf7db/v1/form-fields`,
+    `${efthakharcf7db.api_url}efthakharcf7db/v1/form-fields`,
     JSON.stringify({'fields': form_fields.value,'form_id':form_id.value}),
     {
         headers: {

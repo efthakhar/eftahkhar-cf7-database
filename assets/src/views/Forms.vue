@@ -16,7 +16,7 @@ async function fetchForms(page = current_page.value, perpage = forms_per_page.va
   loading.value = true
   await axios
     .get(
-      `/wp-json/efthakharcf7db/v1/forms?page=${page}&perpage=${perpage}`,
+      `${efthakharcf7db.api_url}efthakharcf7db/v1/forms?page=${page}&perpage=${perpage}`,
       {
         headers: {
           'content-type': 'application/json',
