@@ -91,10 +91,12 @@ class Submissions {
 	}
 
 	public function get_csv_file($request) {
+		
 		global $wpdb;
 		// get the form id , fiedls visible in csv and submission ids
 		$parameters     = $request->get_json_params();
 		$visible_fields = $parameters['visible_fields'] ?? [];
+		$fields_alias = $parameters['fields_alias'] ?? [];
 		$form_id        = $parameters['form_id'];
 		$submission_ids = $parameters['$submission_ids'];
 		// if no submission id provided file will be generated for all submission ids
@@ -108,9 +110,11 @@ class Submissions {
 		$csv_columns = '';
 
 		foreach ($visible_fields as $vfield) {
-			$csv_columns .= ',' . $vfield;
-			$csv_columns = ltrim($csv_columns, ',');
+			//$csv_columns .= ',' . $vfield;			
+			$csv_columns .= ',' . $fields_alias[$vfield];			
 		}
+		$csv_columns = ltrim($csv_columns, ',');
+		
 		fwrite($file_handle, $csv_columns . PHP_EOL);
 
 		// then get the rows from database with pagination for 100 submission ids per page

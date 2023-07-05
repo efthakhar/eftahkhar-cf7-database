@@ -53,11 +53,12 @@ async function fetchSubmissions(form_id, page = current_page.value, perpage = s_
       fields.value = response.data.fields
       submission_ids.value = response.data.submission_ids
 
-      fields_alias.value = []
+      fields_alias.value = {}
       visible_fields.value = []
+     
       for (var k in fields.value) {
         if (fields.value.hasOwnProperty(k)) {
-          fields_alias.value[fields.value[k].name] = fields.value[k].alias
+          fields_alias.value[ fields.value[k].name ] = fields.value[k].alias
           fields.value[k].visible == true ? visible_fields.value.push(fields.value[k].name) : ''
         }
       }
@@ -94,9 +95,11 @@ async function getCSV() {
   let data = 
   JSON.stringify({ 
       'visible_fields': visible_fields.value, 
+      'fields_alias': fields_alias.value, 
       'form_id': form_id.value, 
       'submission_ids': submission_ids_to_export.value, 
   })
+
   await axios.post(
     `/wp-json/efthakharcf7db/v1/getcsv`,
     data,
@@ -127,14 +130,16 @@ onMounted(() => {
   <div class="efcf7db-page">
     <div class="ecfdb-page-header">
       <div>
-        <h2 class="wp-heading-inline"> Form Submissions </h2>
+        <h2 class="wp-heading-inline"> {{ $tr.submissions }} </h2>
       </div>
       <div class="ml-auto">
-        <button class="button action" @click="field_settings_open = true">Fields Settings</button>
-        <!-- <button class="button action ml-15px">Conditions</button> -->
+        <button class="button action" @click="field_settings_open = true">
+          {{ $tr.field_settings }} 
+        </button>
         <a target="_blank" :href="csvFileDownloadLink" ref="csvDownloadButton" class="display-none">download</a>
-        <button class="button button-primary ml-15px"  @click="getCSV">Expost CSV</button>
-        <!-- <a class="button button-primary ml-15px" href="admin.php?page=efthakharcf7dbcsv" target="_blank">Expost CSV</a> -->
+        <button class="button button-primary ml-15px"  @click="getCSV"> 
+          {{ $tr.export_csv }} 
+        </button>
       </div>
     </div>
     <div class="page-main-content">

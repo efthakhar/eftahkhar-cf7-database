@@ -38,12 +38,11 @@ onMounted(() => {
 </script>
 <template>
     <div class="efcf7db-modal p10px">
-        <!-- {{ form_fields }} -->
         <table class="cf7db-list-table">
             <tr>
-                <th>field</th>
-                <th>alias</th>
-                <th>visible</th>
+                <th>{{ $tr.field }}</th>
+                <th>{{ $tr.alias }}</th>
+                <th>{{ $tr.visible }}</th>
             </tr>
             <tr v-for="field in form_fields">
                 <td>{{ field.name }}</td>
@@ -52,8 +51,8 @@ onMounted(() => {
             </tr>
         </table>
         <div class="my-10px">
-            <button class="button button-primary" @click="save">Save Changer</button>
-            <button class="button ml-10px" @click="$emit('SaveSettings')">Cancel</button>
+            <button class="button button-primary" @click="save">{{ $tr.save }}</button>
+            <button class="button ml-10px" @click="$emit('SaveSettings')">{{ $tr.cancle }}</button>
         </div>
     </div>
 </template>

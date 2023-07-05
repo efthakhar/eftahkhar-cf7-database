@@ -44,7 +44,7 @@ onMounted(() => {
 <template>
   <div class="efcf7db-page py-1">
     <div class="wrap">
-      <h1 class="">Form List</h1>
+      <h1 class="">{{ $tr.form_list }}</h1>
       <Loader v-if="loading == true" />
       <div v-if="loading == false">
         <div class="ecfdb-table-container">
@@ -54,9 +54,9 @@ onMounted(() => {
                 <!-- <th scope="col" style="width: 30px">
                   <input type="checkbox" />
                 </th> -->
-                <th class="minwidth-150">Form ID</th>
-                <th class="minwidth-150">Form Name</th>
-                <th class="maxwidth-100 minwidth-60 ml-auto">Action</th>
+                <th class="minwidth-150">{{ $tr.form_id }}</th>
+                <th class="minwidth-150">{{ $tr.form_name }}</th>
+                <th class="maxwidth-100 minwidth-60 ml-auto">{{ $tr.action }}</th>
               </tr>
             </thead>
             <tbody>
@@ -68,7 +68,9 @@ onMounted(() => {
                 <td>{{ form.name }}</td>
                 <td>
                   <button class="button"
-                    @click="router.push({ name: 'submissions', params: { form_id: form.cf7_id } })">submissions</button>
+                    @click="router.push({ name: 'submissions', params: { form_id: form.cf7_id } })">
+                    {{ $tr.submissions }}
+                  </button>
                 </td>
               </tr>
             </tbody>
