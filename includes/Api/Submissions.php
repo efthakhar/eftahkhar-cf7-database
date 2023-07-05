@@ -18,8 +18,8 @@ class Submissions {
 		]);
 
 		register_rest_route('efthakharcf7db/v1', '/getcsv', [
-			'methods'  => 'POST',
-			'callback' => [$this, 'get_csv_file'],
+			'methods'             => 'POST',
+			'callback'            => [$this, 'get_csv_file'],
 			'permission_callback' => [ $this, 'get_csv_file_permissions_check' ],
 		]);
 	}
@@ -49,12 +49,7 @@ class Submissions {
 		// the main sql part for finding desired grouped entries
 		// based on condition
 		$sqlForDesiredEntries = "FROM {$wpdb->efthakharcf7db_submissions} AS s {$joiningSQL} WHERE 1=1
-		   AND s.form_id = {$form_id}
-			--    AND 
-			-- 	(
-			-- 	  (e1.field = 'your-email' AND e1.value LIKE '%11%')
-			--   )
-		GROUP BY s.id ";
+		   AND s.form_id = {$form_id}	GROUP BY s.id ";
 
 		// grouped entries based on conditions
 		$grouped_entries = $wpdb->get_results("SELECT s.id {$sqlForDesiredEntries} LIMIT {$perpage} OFFSET {$offset}", ARRAY_A);
@@ -68,9 +63,7 @@ class Submissions {
 		$total_grouped_entries = $wpdb->query("SELECT COUNT(s.id) {$sqlForDesiredEntries}");
 
 		// final entries based on founded submission ids which ids fullfill all conditions
-		$final_entries = $wpdb->get_results("SELECT e.* 
-		FROM {$wpdb->efthakharcf7db_entries} as e 
-		WHERE e.submission_id IN ({$submission_ids_string})", ARRAY_A);
+		$final_entries = $wpdb->get_results("SELECT e.* FROM {$wpdb->efthakharcf7db_entries} as e WHERE e.submission_id IN ({$submission_ids_string})", ARRAY_A);
 
 		$data = [
 			'current_page'   => $page,
@@ -85,19 +78,18 @@ class Submissions {
 
 	public function get_submissions_permissions_check( $request ) {
 		if ( current_user_can( 'efthakharcf7db_view_submissions' ) ) {
-		return true;
+			return true;
 		}
 
 		return new WP_Error( 'rest_forbidden', 'you cannot view forms', [ 'status' => 403 ] );
 	}
 
 	public function get_csv_file($request) {
-		
 		global $wpdb;
 		// get the form id , fiedls visible in csv and submission ids
 		$parameters     = $request->get_json_params();
 		$visible_fields = $parameters['visible_fields'] ?? [];
-		$fields_alias = $parameters['fields_alias'] ?? [];
+		$fields_alias   = $parameters['fields_alias'] ?? [];
 		$form_id        = $parameters['form_id'];
 		$submission_ids = $parameters['$submission_ids'];
 		// if no submission id provided file will be generated for all submission ids
@@ -111,20 +103,19 @@ class Submissions {
 		$csv_columns = '';
 
 		foreach ($visible_fields as $vfield) {
-			//$csv_columns .= ',' . $vfield;			
-			$csv_columns .= ',' . $fields_alias[$vfield];			
+			// $csv_columns .= ',' . $vfield; 
+			$csv_columns .= ',' . $fields_alias[$vfield]; 
 		}
 		$csv_columns = ltrim($csv_columns, ',');
-		
+
 		fwrite($file_handle, $csv_columns . PHP_EOL);
 
-		// then get the rows from database with pagination for 100 submission ids per page
+		// get the rows from database with pagination for 100 submission ids per page
 		// with all rows found for 100 submission id s in each chunk create array of arrays where each array
 		// will hold all necessary info of specific submission id as associative array
 
 		// create temporary empty array of arrays name structured_s_chunk
 		// visit all rows get from database
-		//
 
 		if (empty($submission_ids)) {
 			$total_submissions = $wpdb->get_var("SELECT COUNT(s.id) FROM {$wpdb->efthakharcf7db_submissions} as s WHERE s.form_id={$form_id}");
@@ -181,6 +172,7 @@ class Submissions {
 		if ( current_user_can( 'efthakharcf7db_view_submissions' ) ) {
 			return true;
 		}
+
 		return new WP_Error( 'rest_forbidden', 'you cannot export esv file', [ 'status' => 403 ] );
 	}
 
@@ -194,14 +186,15 @@ class Submissions {
 		if ('admin.php' === $pagenow
 		&& isset($_GET['page']) && 'efthakharcf7db-getcsv' === $_GET['page']
 		&& isset($_GET['file']) ) {
-			//Set the appropriate headers for file download
+			// Set the appropriate headers for file download
 			header('Content-Type: application/octet-stream');
 			header('Content-Disposition: attachment; filename="' . basename('form-submissions-data.csv') . '"');
 			header('Content-Length: ' . filesize($_GET['file']));
 
 			// Read the file and output it to the browser
 			readfile($_GET['file']);
-            unlink($_GET['file']);
+			unlink($_GET['file']);
+
 			exit;
 		}
 	}
