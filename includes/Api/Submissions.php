@@ -20,6 +20,7 @@ class Submissions {
 		register_rest_route('efthakharcf7db/v1', '/getcsv', [
 			'methods'  => 'POST',
 			'callback' => [$this, 'get_csv_file'],
+			'permission_callback' => [ $this, 'get_csv_file_permissions_check' ],
 		]);
 	}
 
@@ -83,9 +84,9 @@ class Submissions {
 	}
 
 	public function get_submissions_permissions_check( $request ) {
-		// if ( current_user_can( 'efthakharcf7db_view_submissions' ) ) {
+		if ( current_user_can( 'efthakharcf7db_view_submissions' ) ) {
 		return true;
-		// }
+		}
 
 		return new WP_Error( 'rest_forbidden', 'you cannot view forms', [ 'status' => 403 ] );
 	}
@@ -174,6 +175,13 @@ class Submissions {
 		return rest_ensure_response([
 			'csv_download_link' => admin_url() . 'admin.php?page=efthakharcf7db-getcsv&file=' . $file_path,
 		]);
+	}
+
+	public function get_csv_file_permissions_check( $request ) {
+		if ( current_user_can( 'efthakharcf7db_view_submissions' ) ) {
+			return true;
+		}
+		return new WP_Error( 'rest_forbidden', 'you cannot export esv file', [ 'status' => 403 ] );
 	}
 
 	/*

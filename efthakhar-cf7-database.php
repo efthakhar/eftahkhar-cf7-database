@@ -99,10 +99,10 @@ final class EfthakharCF7DB {
 			$wpdb->efthakharcf7db_submissions,
 			$wpdb->efthakharcf7db_entries,
 		];
-
-		foreach ($tableArray as $tablename) {
-			$wpdb->query("DROP TABLE IF EXISTS {$tablename}");
-		}
+		// delete tables if required
+		// foreach ($tableArray as $tablename) {
+		// 	$wpdb->query("DROP TABLE IF EXISTS {$tablename}");
+		// }
 	}
 
 	public function efthakharcf7db_custom_capabilities($action) {

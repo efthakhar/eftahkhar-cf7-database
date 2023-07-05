@@ -99,9 +99,9 @@ class Forms {
 	 *
 	 */
 	public function edit_form_fields_permissions_check($request) {
-		// if ( current_user_can( 'efthakharcf7db_edit_forms' ) ) {
+		if ( current_user_can( 'efthakharcf7db_edit_forms' ) ) {
 		return true;
-		// }
+		}
 
 		return new WP_Error( 'rest_forbidden', 'you have no permission to edit form fields', [ 'status' => 403 ] );
 	}
